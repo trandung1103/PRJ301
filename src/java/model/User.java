@@ -1,10 +1,12 @@
 package model;
 
 public class User {
+    private int id;
     private String username;
     private String password;
     private String role;
     private String displayName;
+    
     private Cart cart;
     
     // Constructor, getters, and setters
@@ -13,12 +15,23 @@ public class User {
         this.cart = new Cart();
     }
     
-    public User(String username, String password, String role, String displayName) {
+    public User(int id,String username, String password, String role, String displayName) {
+        this.id=id;
         this.username = username;
         this.password = password;
         this.role = role;
         this.displayName = displayName;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     
     
     public String getUsername() {

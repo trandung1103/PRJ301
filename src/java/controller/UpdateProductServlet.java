@@ -9,7 +9,7 @@ import model.Product;
 public class UpdateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String productId = request.getParameter("productId");
+        int productId =Integer.getInteger(request.getParameter("productId")) ;
         String name = request.getParameter("name");
         double price = Double.parseDouble(request.getParameter("price"));
         String description = request.getParameter("description");
@@ -18,7 +18,7 @@ public class UpdateProductServlet extends HttpServlet {
         ArrayList<Product> products = (ArrayList<Product>) getServletContext().getAttribute("products");
         if (products != null) {
             for (Product product : products) {
-                if (product.getProduct_id().equals(productId)) {
+                if (product.getProduct_id()==productId) {
                     product.setProduct_name(name);
                     product.setProduct_price(price);
                     product.setProduct_description(description);

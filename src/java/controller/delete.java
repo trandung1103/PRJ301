@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
+import dal.UserDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,34 +20,37 @@ import model.User;
  * @author DUNG TD
  */
 public class delete extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet delete</title>");  
+            out.println("<title>Servlet delete</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet delete at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet delete at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -55,24 +58,22 @@ public class delete extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        ServletContext context = getServletContext();
-        String index = request.getParameter("index");
-        ArrayList<User> users = (ArrayList<User>) context.getAttribute("users");
-        if (!users.isEmpty()) {
-            for (User user : users) {
-                if (index.equalsIgnoreCase(user.getUsername())) {
-                    users.remove(user);
-                    break;
-                }
-            }
-            context.setAttribute("users", users);
-        }
-        request.getRequestDispatcher("admin.jsp").forward(request, response);
-    } 
+            throws ServletException, IOException {
+        String userID = request.getParameter("userID");
+        UserDAO userDAO = new UserDAO();
 
-    /** 
+        // Kiểm tra nếu userID không phải admin (userID != 1) thì xóa
+        if (userID != null && !userID.equals("1")) {
+            userDAO.deleteUserById(Integer.parseInt(userID));
+        }
+
+        // Sau khi xóa, quay lại trang danh sách người dùng
+        response.sendRedirect("list_user.jsp");
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -80,12 +81,13 @@ public class delete extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

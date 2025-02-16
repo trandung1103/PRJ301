@@ -6,9 +6,9 @@
 User user = (User) session.getAttribute("user");
 if (user != null) {
     String productName = request.getParameter("productName");
-    user.getCart().removeItem(productName); // Xóa sản phẩm khỏi giỏ hàng
-    response.sendRedirect("cart.jsp"); // Chuyển hướng về trang giỏ hàng
+    user.getCart().removeItem(productName); 
+    response.sendRedirect("cart.jsp");
 } else {
-    response.sendRedirect("login.jsp"); // Chuyển hướng đến trang login nếu người dùng chưa đăng nhập
+    response.sendRedirect("login.jsp");
 }
 %>

@@ -41,11 +41,11 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #4CAF50; /* Màu viền khi ô được chọn */
+    border-color: #2980b9; /* Màu viền khi ô được chọn */
 }
 
 .login-button {
-    background-color: #4CAF50; /* Màu nền cho nút đăng nhập */
+    background-color: #2980b9; /* Màu nền cho nút đăng nhập */
     color: white; /* Màu chữ cho nút */
     border: none; /* Bỏ đường viền */
     border-radius: 4px; /* Bo góc */
@@ -66,18 +66,18 @@ p {
 /* Định dạng liên kết quên mật khẩu */
 .forgot-password-link {
     font-size: 0.8em; /* Kích thước chữ nhỏ hơn */
-    color: #4CAF50; /* Màu xanh lá cho liên kết */
+    color: #2980b9; /* Màu xanh lá cho liên kết */
     text-align: left; /* Căn trái */
     display: block; /* Để liên kết nằm trên một dòng mới */
     padding-left: 0; /* Căn sát viền trái */
 }
 
-/* Định dạng liên kết đăng ký */
+
 .register-link {
-    color: #4CAF50; /* Màu xanh lá cho liên kết */
-    text-decoration: none; /* Bỏ gạch chân */
-    text-align: center; /* Canh giữa */
-    display: block; /* Để liên kết nằm trên một dòng mới */
+    color: #2980b9; 
+    text-decoration: none;
+    text-align: center;
+    display: block; 
 }
 
 /* Thêm gạch chân khi di chuột */

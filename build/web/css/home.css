@@ -5,6 +5,7 @@
     box-sizing: border-box;
 }
 
+/* Body styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -14,9 +15,14 @@ body {
 
 /* Header styles */
 header {
-    background: #28a745; /* Màu xanh lá */
+    background: #2980b9; /* Màu xanh lá */
     color: #fff;
     padding: 20px 0;
+    position: fixed; /* Cố định vị trí */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Đảm bảo header ở trên cùng */
 }
 
 .header-container {
@@ -32,6 +38,39 @@ h1 {
     font-size: 2em;
 }
 
+/* Nav styles */
+.nav {
+    background: rgba(40, 167, 69, 0.8); /* Màu xanh lá với độ mờ */
+    position: fixed; /* Cố định vị trí */
+    top: 100px; /* Cách header 70px */
+    left: 0;
+    right: 0;
+    z-index: 999; /* Đảm bảo nav ở trên cùng */
+}
+
+.nav ul {
+    list-style: none;
+    display: flex; /* Sử dụng flex */
+    justify-content: center; /* Căn giữa các mục */
+    padding: 10px 0;
+}
+
+.nav li {
+    margin: 0 15px;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+.nav a:hover {
+    background-color: #218838; /* Màu xanh lá đậm hơn khi hover */
+}
+
+/* Search form styles */
 .search-form {
     display: flex;
     align-items: center;
@@ -76,7 +115,7 @@ h1 {
 /* Main styles */
 main {
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 120px 20px 20px; /* Cách trên 120px và trái phải 20px */
     padding: 20px;
     background: #ffffff;
     border-radius: 8px;
@@ -89,75 +128,60 @@ h2 {
     color: #333;
 }
 
-/* Product styles */
+.category {
+    background-color: #f9f9f9; /* Màu nền nhẹ cho mỗi danh mục */
+    border: 1px solid #ddd; /* Đường viền cho danh mục */
+    border-radius: 8px; /* Góc bo tròn */
+    margin: 20px 0; /* Khoảng cách giữa các danh mục */
+    padding: 20px; /* Khoảng cách bên trong của danh mục */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho danh mục */
+}
+
+.category h3 {
+    font-size: 24px; /* Kích thước chữ cho tiêu đề danh mục */
+    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+    color: #333; /* Màu chữ tiêu đề */
+}
+
+.products-container {
+    display: flex; /* Sử dụng flexbox để căn chỉnh sản phẩm */
+    flex-wrap: wrap; /* Cho phép các sản phẩm xuống dòng */
+    gap: 15px; /* Khoảng cách giữa các sản phẩm */
+}
+
 .product {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin: 15px 0;
-    transition: box-shadow 0.3s;
+    background-color: #fff; /* Màu nền cho sản phẩm */
+    border: 1px solid #ddd; /* Đường viền cho sản phẩm */
+    border-radius: 5px; /* Góc bo tròn cho sản phẩm */
+    padding: 15px; /* Khoảng cách bên trong của sản phẩm */
+    text-align: center; /* Căn giữa nội dung sản phẩm */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho sản phẩm */
+    transition: transform 0.2s; /* Hiệu ứng chuyển tiếp khi hover */
 }
 
 .product:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05); /* Phóng to sản phẩm khi hover */
 }
 
-.product h3 {
-    font-size: 1.5em;
-    color: #28a745; /* Màu xanh lá */
+.product img {
+    max-width: 100%; /* Giới hạn chiều rộng hình ảnh */
+    height: auto; /* Chiều cao tự động để giữ tỷ lệ */
+}
+
+.product h4 {
+    font-size: 18px; /* Kích thước chữ cho tên sản phẩm */
+    margin: 10px 0; /* Khoảng cách trên và dưới tên sản phẩm */
 }
 
 .product p {
-    color: #555;
-}
-
-/* Form styles */
-.product form {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.product input[type="number"] {
-    width: 60px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Button styles */
-.product button {
-    padding: 10px 15px;
-    color: white;
-    background-color: #28a745; /* Màu xanh lá */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.product button:hover {
-    background-color: #218838; /* Màu xanh lá đậm hơn */
-}
-
-.product a {
-    display: inline-block;
-    padding: 10px 15px;
-    color: white;
-    background-color: #28a745; /* Màu xanh lá */
-    border-radius: 5px;
-    text-decoration: none;
-    text-align: center;
-}
-
-.product a:hover {
-    background-color: #218838; /* Màu xanh lá đậm hơn */
+    margin: 5px 0; /* Khoảng cách giữa các đoạn văn bản trong sản phẩm */
 }
 
 /* Footer styles */
 footer {
     text-align: center;
     padding: 15px;
-    background: #28a745; /* Màu xanh lá */
+    background: #2980b9; /* Màu xanh lá */
     color: #fff;
     position: relative;
     bottom: 0;

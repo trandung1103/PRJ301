@@ -1,28 +1,25 @@
 package controller;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import java.io.IOException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 public class LogoutServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    public LogoutServlet() {
-        super();
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Lấy session hiện tại
-        HttpSession session = request.getSession(false); // false để không tạo session mới
+        // Invalidate the current session
+        HttpSession session = request.getSession(false); // Get the session if it exists
         if (session != null) {
-            // Hủy session
-            session.invalidate();
+            session.invalidate(); // Invalidate the session
         }
-        // Chuyển hướng về trang đăng nhập
+
+        // Remove the cookie by setting its max age to 0
+        Cookie usernameCookie = new Cookie("username", null);
+        usernameCookie.setMaxAge(0); // Set cookie to expire immediately
+        response.addCookie(usernameCookie);
+
+        // Redirect to home page
         response.sendRedirect("home.jsp");
     }
 }

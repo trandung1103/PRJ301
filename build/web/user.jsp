@@ -12,39 +12,37 @@
     <head>
         <meta charset="UTF-8">
         <title>User Profile</title>
-        <link rel="stylesheet" href="css/user.css"> <!-- Kết nối file CSS -->
+        <link rel="stylesheet" href="css/user.css?v=1.0"> <!-- Kết nối file CSS -->
     </head>
     <body>
         <div class="profile-container">
-            <h1>User Information</h1>
+            <h1>Thông tin tài khoản</h1>
             <%
-                // Lấy thông tin người dùng từ session
                 User user = (User) session.getAttribute("user");
                 
-                // Kiểm tra nếu người dùng không null
                 if (user != null) {
             %>
             <table>
                 <tr>
-                    <th>Username:</th>
+                    <th>Tài khoản</th>
                     <td><%= user.getUsername() %></td>
                 </tr>
                 <tr>
-                    <th>Display Name</th>
+                    <th>Tên hiển thị</th>
                     <td><%= user.getDisplayName() %></td>
                 </tr>
                 <tr>
-                    <th>Password</th>
-                    <td><%= user.getPassword() %></td>
+                    <th>Mật khẩu</th>
+                    <td><input style="border: none;" type="password" name="name" value="<%= user.getPassword() %>" onlyread></td>
                 </tr>
                 <tr>
-                    <th>Edit information:</th>
-                    <td><a href="edit_user.jsp">Edit Profile</a></td>
+                    <th>Chỉnh sửa thông tin:</th>
+                    <td><a href="edit_user.jsp">Chỉnh sửa</a></td>
                 </tr>
             </table>
             <div class="action-links">
-                <a href="logout.jsp">Logout</a>
-                <a href="home.jsp">Back home</a>
+                <a href="logout">Đăng xuất</a>
+                <a href="home.jsp">Quay về trang chủ</a>
             </div>
             <%
                 } else {

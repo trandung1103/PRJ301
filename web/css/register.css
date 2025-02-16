@@ -50,11 +50,11 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #4CAF50; /* Màu viền khi ô được chọn */
+    border-color: #2980b9; /* Màu viền khi ô được chọn */
 }
 
 .register-button {
-    background-color: #4CAF50; /* Màu nền cho nút đăng ký */
+    background-color: #2980b9; /* Màu nền cho nút đăng ký */
     color: white; /* Màu chữ cho nút */
     border: none; /* Bỏ đường viền */
     border-radius: 4px; /* Bo góc */
@@ -72,12 +72,12 @@ p {
     text-align: center; /* Canh giữa văn bản */
 }
 .login-link {
-    text-align: center; /* Căn giữa nội dung */
-    margin-top: 15px; /* Khoảng cách trên để tách khỏi nút đăng ký */
+    text-align: center; 
+    margin-top: 15px; 
 }
 
 .login-link a {
-    color: #4CAF50; /* Màu chữ cho liên kết */
+    color: #2980b9; /* Màu chữ cho liên kết */
     text-decoration: none; /* Bỏ gạch chân */
 }
 

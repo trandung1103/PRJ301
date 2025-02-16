@@ -1,149 +1,118 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.Product" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page session="true" %>
+<%@ page import="model.Category" %>
+<%@ page import="dal.CategoryDAO" %>
+<%@ page import="java.util.List" %>
+
+<%
+    Product product = (Product) request.getAttribute("product");
+    CategoryDAO cate=new CategoryDAO();
+    List<Category> cg=cate.getAll();
+%>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product</title>
-    <style>
-        * {
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensure the body takes full height */
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: #4CAF50; /* Green */
-        }
-        main {
-            flex: 1; /* Allow main content to grow */
-            padding: 20px;
-        }
-        table {
-            width: 50%;
-            margin: auto;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            padding: 15px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #4CAF50; /* Green */
-            color: white;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], input[type="number"], textarea {
-            width: calc(100% - 20px); /* Adjust for padding */
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #4CAF50; /* Green */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%; /* Make button fill the width */
-        }
-        button:hover {
-            background-color: #45a049; /* Darker Green */
-        }
-        footer {
-            background-color: #4CAF50; /* Green background */
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: relative; /* Keep footer in flow */
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Edit Product</h1>
-    </header>
-
-    <main>
-        <%
-            String productId = request.getParameter("productId");
-            ArrayList<Product> products = (ArrayList<Product>) getServletContext().getAttribute("products");
-            Product productToEdit = null;
-
-            if (products != null) {
-                for (Product product : products) {
-                    if (product.getProduct_id().equals(productId)) {
-                        productToEdit = product;
-                        break;
-                    }
-                }
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit Product</title>
+        <link rel="stylesheet" type="text/css" href="styles.css"> <!-- Liên kết đến file CSS -->
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                margin: 0;
+                padding: 20px;
             }
 
-            if (productToEdit != null) {
-        %>
-            <form action="UpdateProductServlet" method="post">
-                <input type="hidden" name="productId" value="<%= productToEdit.getProduct_id() %>">
-                <table>
-                    <tr>
-                        <th>Field</th>
-                        <th>Value</th>
-                    </tr>
-                    <tr>
-                        <td><label for="name">Product Name:</label></td>
-                        <td><input type="text" name="name" value="<%= productToEdit.getProduct_name() %>" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="price">Price:</label></td>
-                        <td><input type="number" name="price" value="<%= productToEdit.getProduct_price() %>" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="description">Description:</label></td>
-                        <td><textarea name="description" required><%= productToEdit.getProduct_description() %></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><label for="quantity">Quantity:</label></td>
-                        <td><input type="number" name="quantity" value="<%= productToEdit.getProduct_quantity() %>" required></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align:center;">
-                            <button type="submit">Update Product</button>
-                        </td>
-                    </tr>
-                </table>
+            h1 {
+                color: #007BFF;
+                text-align: center;
+            }
+
+            .form-container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            label {
+                display: block;
+                margin: 10px 0 5px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            input[type="file"],
+            select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng tổng */
+            }
+
+            button {
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                cursor: pointer;
+                border-radius: 4px;
+                width: 100%;
+                font-size: 16px; /* Tăng kích thước font cho nút */
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+            /* Thêm khoảng cách giữa các trường */
+            input[type="text"],
+            input[type="number"],
+            select {
+                margin-bottom: 20px; /* Thay đổi khoảng cách giữa các trường */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="form-container">
+            <h1>Edit Product</h1>
+            <form action="storage" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="updateProduct">
+                <input type="hidden" name="product_id" value="<%= product.getProduct_id() %>">
+
+                <label for="productName">Product Name:</label>
+                <input type="text" name="product_name" value="<%= product.getProduct_name() %>" required>
+
+                <label for="productPrice">Price:</label>
+                <input type="number" name="product_price" value="<%= product.getProduct_price() %>" required>
+
+                <label for="productQuantity">Quantity:</label>
+                <input type="number" name="product_quantity" value="<%= product.getProduct_quantity() %>" required>
+
+                <label for="productDes">Description:</label>
+                <input type="text" name="description" value="<%= product.getProduct_description() %>" required>
+
+                <label for="productCategory">Category:</label>
+                <select name="categoryID" id="id" required>
+                    <option value="null">Chọn danh mục</option>
+                    <%
+                        for(Category ctg : cg) {
+                    %>
+                    <option value="<%= ctg.getId() %>"><%= ctg.getName() %></option>
+                    <% } %>
+                </select>
+
+                <label for="productImage">Image URL:</label>
+                <input type="file" name="imageFile" accept="image/*" required>
+
+                <button type="submit">Update Product</button>
             </form>
-        <%
-            } else {
-        %>
-            <p style="color: red; text-align: center;">Product not found!</p>
-        <%
-            }
-        %>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Shop DDT. All rights reserved.</p>
-    </footer>
-</body>
+        </div>
+    </body>
 </html>

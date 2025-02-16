@@ -1,106 +1,153 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="dal.CategoryDAO" %>
+<%@ page import="dal.ProductDAO" %>
+<%@ page import="model.Category" %>
+<%@ page import="model.Product" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
-    <link rel="stylesheet" href="css/home.css?v=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Product</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
 
-        header {
-            text-align: center;
-            margin: 20px 0;
-        }
+            header {
+                text-align: center;
+                margin: 20px 0;
+                background-color: #3498db;
+                color: white;
+                padding: 20px 0;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
 
-        main {
-            display: flex;
-            justify-content: center;
-        }
+            main {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(100vh - 120px);
+            }
 
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+            .container {
+                width: 100%;
+                max-width: 600px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+            }
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+            .form-group {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
 
-        th {
-            background-color: #4CAF50; /* Green */
-            color: white;
-        }
+            label {
+                flex: 1;
+                margin-right: 10px;
+                text-align: right;
+            }
 
-        tr:hover {
-            background-color: #f1f1f1;
-        }
+            input[type="text"],
+            input[type="number"],
+            textarea {
+                flex: 2;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                transition: border-color 0.3s;
+                width: 100%;
+            }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9; /* Light gray for alternate rows */
-        }
+            input[type="text"]:focus,
+            input[type="number"]:focus,
+            textarea:focus {
+                border-color: #3498db;
+                outline: none;
+            }
 
-        button {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+            button {
+                background-color: #e67e22;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+                width: 100%;
+            }
 
-        button:hover {
-            background-color: #45a049; /* Darker green */
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Add New Product</h1>
-    </header>
+            button:hover {
+                background-color: #d35400;
+            }
 
-    <main>
-        <form action="Admin_Product" method="post">
-            <table>
-                <tr>
-                    <th colspan="2">Product Information</th>
-                </tr>
-                <tr>
-                    <td><label for="name">Product Name:</label></td>
-                    <td><input type="text" name="name" required></td>
-                </tr>
-                <tr>
-                    <td><label for="price">Price:</label></td>
-                    <td><input type="number" name="price" step="0.01" required></td>
-                </tr>
-                <tr>
-                    <td><label for="description">Description:</label></td>
-                    <td><textarea name="description" required></textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="quantity">Available Stock:</label></td>
-                    <td><input type="number" name="quantity" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <button type="submit">Add Product</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </main>
+            footer {
+                text-align: center;
+                margin-top: 20px;
+                background-color: #3498db;
+                color: white;
+                padding: 10px 0;
+            }
 
-    <footer>
-        <p>&copy; 2024 Shop DDT. All rights reserved.</p>
-    </footer>
-</body>
+            .back-home {
+                margin-top: 15px;
+                text-align: center;
+            }
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Add New Product</h1>
+        </header>
+
+        <main>
+            <%
+                CategoryDAO categoryDAO=new CategoryDAO();
+                List<Category> categories = categoryDAO.getAll();
+            %>
+
+            <div class="container">
+                <form action="AddProduct" method="post" enctype="multipart/form-data" style="display:inline;">
+                    <h1 style="text-align: center;">Thêm sản phẩm mới</h1>
+                    <input type="hidden" name="action" value="addProduct">
+                    <input type="text" name="product_name" required placeholder="Product Name"><br><br>
+                    <input type="number" name="product_price" required placeholder="Price"><br><br>
+                    <input type="number" name="product_quantity" required placeholder="Quantity"><br><br>
+                    <input type="text" name="description" required placeholder="Description"><br>
+                    <br>
+                    <select name="categoryId" id="id">
+                        <%
+                            for(Category cg : categories) {
+                        %>
+                        <option value="<%= cg.getId() %>"><%= cg.getName() %></option>
+                        <% } %>
+                    </select>
+
+                    <br><br>
+                    <input type="file" name="imageFile" accept="image/*" required>
+                    <br><br>
+                    <button type="submit">Add Product</button>
+                </form>
+                <div class="back-home">
+                    <a href="home.jsp" style="text-decoration: none; color: white;">
+                        <button>Back Home</button>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Toyo. All rights reserved.</p>
+        </footer>
+    </body>
 </html>

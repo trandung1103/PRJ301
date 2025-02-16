@@ -1,5 +1,6 @@
 package controller;
 
+import dal.UserDAO;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -11,53 +12,35 @@ import java.util.ArrayList;
 import model.User;
 
 public class add extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        ServletContext context = getServletContext();
-        
-        // Lấy danh sách người dùng từ ServletContext, nếu chưa có thì khởi tạo
-        ArrayList<User> users = (ArrayList<User>) context.getAttribute("users");
-        if (users == null) {
-            users = new ArrayList<>(); // Nếu chưa có danh sách, khởi tạo mới
-//            users.add(new User("dung", "12345", "admin", "TD"));
-//            context.setAttribute("users", users);
-        }
-
-        // Lấy thông tin từ form đăng ký
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String displayName = request.getParameter("displayname");
         String role = request.getParameter("role");
-        // Kiểm tra xem username có tồn tại chưa
-        boolean userExists = false;
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                userExists = true;
-                break;
-            }
+        String displayName = request.getParameter("displayname");
+
+        UserDAO userDAO = new UserDAO();
+
+        if (userDAO.userExists(username)) {
+            request.setAttribute("errorMessage", "Tên người dùng đã tồn tại.");
+            request.getRequestDispatcher("admin_add.jsp").forward(request, response);
+            return;
         }
 
-        // Nếu username chưa tồn tại, tạo người dùng mới
-        if (!userExists) {
-            
-            // Tạo đối tượng User mới với role "user"
-            User newUser = new User(username, password, role, displayName);
+        User user = new User(0, username, password, role, displayName); 
 
-            // Thêm người dùng mới vào danh sách
-            users.add(newUser);
+        // Đăng ký người dùng
+        if (userDAO.register(user)) {
+            // Tạo giỏ hàng cho người dùng
+            int userId = userDAO.getUserIdByUsername(username); // Lấy user_id
+            userDAO.createCart(userId); // Tạo giỏ hàng
 
-            // Lưu danh sách người dùng vào ServletContext
-            context.setAttribute("users", users);
-
-            // Chuyển hướng đến trang admin sau khi đăng ký thành công
-            response.sendRedirect("admin.jsp");
+            response.sendRedirect("list_user.jsp"); 
         } else {
-            // Nếu username đã tồn tại, thông báo lỗi và chuyển hướng lại trang đăng ký
-            request.setAttribute("message", "Username already exists.");
-            request.getRequestDispatcher("admin_add.jsp").forward(request, response);
+            response.sendRedirect("error.jsp"); // Chuyển hướng đến trang lỗi nếu có vấn đề
         }
     }
 }
